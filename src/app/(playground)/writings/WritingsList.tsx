@@ -28,7 +28,7 @@ export default function WritingsList({
                     className={
                       writing.published
                         ? "text-xs text-emerald-400"
-                        : "text-xs text-zinc-500"
+                        : "text-xs text-zinc-300 rounded bg-zinc-800 px-1 border border-zinc-500"
                     }
                   >
                     {writing.published ? "Published" : "Draft"}
