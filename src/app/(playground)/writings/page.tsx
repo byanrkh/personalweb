@@ -9,7 +9,24 @@ const WRITINGS: {
   excerpt: string;
   href: string;
 }[] = [
-  // Tambahkan tulisan kamu di sini
+  {
+    title: "First post",
+    date: "Jan 1, 2026",
+    excerpt: "This is the first post on this site. More to come!",
+    href: "#",
+  },
+  {
+    title: "First post",
+    date: "Jan 1, 2026",
+    excerpt: "This is the first post on this site. More to come!",
+    href: "#",
+  },
+  {
+    title: "First post",
+    date: "Jan 1, 2026",
+    excerpt: "This is the first post on this site. More to come!",
+    href: "#",
+  },
 ];
 
 export default async function WritingsPage() {
@@ -35,8 +52,8 @@ export default async function WritingsPage() {
         </p>
       ) : (
         <ul className="divide-y divide-zinc-900">
-          {WRITINGS.map((post) => (
-            <li key={post.title} className="py-6 first:pt-0">
+          {WRITINGS.map((post, idx) => (
+            <li key={idx} className="py-6 first:pt-0">
               <div className="flex items-baseline justify-between gap-4">
                 <a href={post.href} className="group">
                   <span className="font-medium text-zinc-100 transition-colors group-hover:text-zinc-400">
@@ -57,7 +74,11 @@ export default async function WritingsPage() {
                   <span className="text-sm text-zinc-500">{post.date}</span>
                 </div>
               </div>
-              <p className="mt-1 text-sm text-zinc-500">{post.excerpt}</p>
+              <div className="mt-1 flex items-center gap-4">
+                <p className="text-sm text-zinc-500">{post.excerpt}</p>
+                <span className="text-xs text-zinc-500">•</span>
+                <p className="text-xs text-zinc-500">5 min read</p>
+              </div>
             </li>
           ))}
         </ul>

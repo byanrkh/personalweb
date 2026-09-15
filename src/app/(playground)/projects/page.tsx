@@ -44,8 +44,8 @@ export default async function ProjectsPage() {
       </div>
 
       <ul className="divide-y divide-zinc-900">
-        {PROJECTS.map((project) => (
-          <li key={project.title} className="py-6 first:pt-0">
+        {PROJECTS.map((project, idx) => (
+          <li key={idx} className="py-6 first:pt-0">
             <div className="flex items-baseline justify-between gap-4">
               <Link
                 href={project.href}

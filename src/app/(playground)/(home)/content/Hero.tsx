@@ -4,7 +4,7 @@ import { newsreader } from "@/libs/Fonts";
 
 export default function Hero() {
   return (
-    <Container className="space-y-8 py-24">
+    <Container className="space-y-8 py-20">
       <p className="text-base text-zinc-500">Hi, I&apos;m</p>
       <h1 className={`text-4xl italic text-zinc-50 ${newsreader.className}`}>
         Abyan Raditya

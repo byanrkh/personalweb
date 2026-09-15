@@ -3,7 +3,14 @@ import PageHeading from "@/components/Heading";
 import { newsreader } from "@/libs/Fonts";
 import React from "react";
 
-const STACK = ["TypeScript", "React", "Next.js", "Tailwind CSS", "Node.js"];
+const STACK = [
+  "TypeScript",
+  "React",
+  "Next.js",
+  "Tailwind CSS",
+  "Supabase",
+  "Vercel",
+];
 
 export default function AboutPage() {
   return (
