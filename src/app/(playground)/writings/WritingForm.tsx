@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { slugify } from "@/libs/Slug";
 import type { Writing } from "@/types/Writing";
+import MarkdownEditor from "@/components/MarkdownEditor";
 
 type Props = {
   action: (formData: FormData) => void;
@@ -70,7 +71,6 @@ export default function WritingForm({
           id="slug"
           name="slug"
           type="text"
-          required
           value={slug}
           onChange={(e) => handleSlugChange(e.target.value)}
           className="w-full rounded-lg border border-zinc-800 bg-transparent px-3 py-2 text-sm text-zinc-100 outline-none focus-visible:border-zinc-600"
@@ -84,9 +84,9 @@ export default function WritingForm({
         <textarea
           id="excerpt"
           name="excerpt"
-          required
           rows={2}
           defaultValue={defaultValues?.excerpt}
+          placeholder="Ringkasan singkat buat preview di list"
           className="w-full rounded-lg border border-zinc-800 bg-transparent px-3 py-2 text-sm text-zinc-100 outline-none focus-visible:border-zinc-600"
         />
       </div>
@@ -105,19 +105,13 @@ export default function WritingForm({
         />
       </div>
 
-      <div className="space-y-1.5">
-        <label htmlFor="content" className="text-sm text-zinc-500">
-          Content
-        </label>
-        <textarea
-          id="content"
-          name="content"
-          required
-          rows={16}
-          defaultValue={defaultValues?.content}
-          className="w-full rounded-lg border border-zinc-800 bg-transparent px-3 py-2 font-mono text-sm text-zinc-100 outline-none focus-visible:border-zinc-600"
-        />
-      </div>
+      <MarkdownEditor
+        id="content"
+        name="content"
+        label="Content"
+        defaultValue={defaultValues?.content}
+        rows={18}
+      />
 
       <div className="flex items-center gap-3">
         {isEdit ? (
@@ -126,6 +120,7 @@ export default function WritingForm({
               type="submit"
               name="intent"
               value="save"
+              formNoValidate
               className="rounded-lg border border-zinc-800 px-3 py-2 text-sm text-zinc-300 transition-colors hover:border-zinc-600"
             >
               Save changes
@@ -135,6 +130,7 @@ export default function WritingForm({
                 type="submit"
                 name="intent"
                 value="unpublish"
+                formNoValidate
                 className="rounded-lg border border-zinc-800 px-3 py-2 text-sm text-zinc-300 transition-colors hover:border-zinc-600"
               >
                 Unpublish
@@ -156,6 +152,7 @@ export default function WritingForm({
               type="submit"
               name="intent"
               value="draft"
+              formNoValidate
               className="rounded-lg border border-zinc-800 px-3 py-2 text-sm text-zinc-300 transition-colors hover:border-zinc-600"
             >
               Save as Draft

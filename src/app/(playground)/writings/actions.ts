@@ -44,22 +44,30 @@ export async function createWriting(formData: FormData) {
   const intent = formData.get("intent") as string; // "draft" | "publish"
   const publish = intent === "publish";
 
-  const rawSlug = ((formData.get("slug") as string) || title).trim();
-  const slug = slugify(rawSlug);
-
-  if (!title || !excerpt || !content || !slug) {
+  if (!title) {
     redirect(
       `/writings/new?error=${encodeURIComponent(
-        "Title, slug, excerpt, and content are required.",
+        "Title wajib diisi, meskipun masih draft.",
       )}`,
     );
   }
+
+  if (publish && (!excerpt || !content)) {
+    redirect(
+      `/writings/new?error=${encodeURIComponent(
+        "Excerpt dan content wajib diisi sebelum publish.",
+      )}`,
+    );
+  }
+
+  const rawSlug = ((formData.get("slug") as string) || title).trim();
+  const slug = slugify(rawSlug) || slugify(`untitled-${Date.now()}`);
 
   const unique = await ensureUniqueSlug(slug);
   if (!unique) {
     redirect(
       `/writings/new?error=${encodeURIComponent(
-        `Slug "${slug}" is already in use.`,
+        `Slug "${slug}" sudah dipakai.`,
       )}`,
     );
   }
@@ -81,7 +89,7 @@ export async function createWriting(formData: FormData) {
 
   revalidatePath("/writings");
   revalidatePath("/writings/drafts");
-  redirect(`/writings/${slug}`);
+  redirect(publish ? `/writings/${slug}` : `/writings/${slug}/edit`);
 }
 
 export async function updateWriting(originalSlug: string, formData: FormData) {
@@ -93,16 +101,16 @@ export async function updateWriting(originalSlug: string, formData: FormData) {
   const tags = parseTags((formData.get("tags") as string) ?? "");
   const intent = formData.get("intent") as string; // "save" | "publish" | "unpublish"
 
-  const rawSlug = ((formData.get("slug") as string) || title).trim();
-  const slug = slugify(rawSlug);
-
-  if (!title || !excerpt || !content || !slug) {
+  if (!title) {
     redirect(
       `/writings/${originalSlug}/edit?error=${encodeURIComponent(
-        "Title, slug, excerpt, and content are required.",
+        "Title wajib diisi, meskipun masih draft.",
       )}`,
     );
   }
+
+  const rawSlug = ((formData.get("slug") as string) || title).trim();
+  const slug = slugify(rawSlug) || slugify(`untitled-${Date.now()}`);
 
   const supabase = await createClient();
 
@@ -118,19 +126,27 @@ export async function updateWriting(originalSlug: string, formData: FormData) {
     );
   }
 
+  const nextPublished =
+    intent === "publish" ? true : intent === "unpublish" ? false : existing.published;
+
+  if (nextPublished && (!excerpt || !content)) {
+    redirect(
+      `/writings/${originalSlug}/edit?error=${encodeURIComponent(
+        "Excerpt dan content wajib diisi sebelum publish.",
+      )}`,
+    );
+  }
+
   if (slug !== originalSlug) {
     const unique = await ensureUniqueSlug(slug, existing.id);
     if (!unique) {
       redirect(
         `/writings/${originalSlug}/edit?error=${encodeURIComponent(
-          `Slug "${slug}" is already in use.`,
+          `Slug "${slug}" sudah dipakai.`,
         )}`,
       );
     }
   }
-
-  const nextPublished =
-    intent === "publish" ? true : intent === "unpublish" ? false : existing.published;
 
   // Only set published_at the first time a writing goes live.
   const published_at =
@@ -161,7 +177,7 @@ export async function updateWriting(originalSlug: string, formData: FormData) {
   revalidatePath("/writings/drafts");
   revalidatePath(`/writings/${originalSlug}`);
   revalidatePath(`/writings/${slug}`);
-  redirect(`/writings/${slug}`);
+  redirect(intent === "publish" ? `/writings/${slug}` : `/writings/${slug}/edit`);
 }
 
 export async function deleteWriting(id: string) {

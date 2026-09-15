@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Container from "@/components/Container";
 import PageHeading from "@/components/Heading";
+import Markdown from "@/components/Markdown";
 import { getAdminUser } from "@/libs/supabase/auth";
 import { createClient } from "@/libs/supabase/server";
 import { formatDate } from "@/libs/Format";
@@ -75,9 +76,7 @@ export default async function WritingDetailPage({
         ) : null}
       </div>
 
-      <div className="whitespace-pre-wrap text-base leading-relaxed text-zinc-300">
-        {post.content}
-      </div>
+      <Markdown content={post.content} />
     </Container>
   );
 }

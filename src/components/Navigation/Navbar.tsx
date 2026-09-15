@@ -31,7 +31,7 @@ export default function Navbar({ isAdmin }: { isAdmin: boolean }) {
                   className={cn(
                     "transition-colors duration-200",
                     pathname === item.path
-                      ? "text-zinc-100 underline underline-offset-4"
+                      ? "text-zinc-100 underline underline-offset-4 hover:underline-offset-8 transition-all"
                       : "text-zinc-400 hover:text-zinc-200",
                   )}
                   href={item.path}

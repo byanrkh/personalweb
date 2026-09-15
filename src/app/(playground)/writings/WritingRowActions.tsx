@@ -1,6 +1,7 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
+import ConfirmDialog from "@/components/ConfirmDialog";
 import { deleteWriting, togglePublish } from "./actions";
 
 export default function WritingRowActions({
@@ -13,11 +14,12 @@ export default function WritingRowActions({
   published: boolean;
 }) {
   const [isPending, startTransition] = useTransition();
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   function handleDelete() {
-    if (!confirm(`Delete "${slug}"? This cannot be undone.`)) return;
     startTransition(() => {
       deleteWriting(id);
+      setConfirmOpen(false);
     });
   }
 
@@ -39,12 +41,23 @@ export default function WritingRowActions({
       </button>
       <button
         type="button"
-        onClick={handleDelete}
+        onClick={() => setConfirmOpen(true)}
         disabled={isPending}
         className="text-xs text-zinc-500 transition-colors hover:text-red-400 disabled:opacity-50"
       >
         Delete
       </button>
+
+      <ConfirmDialog
+        open={confirmOpen}
+        title={`Delete "${slug}"?`}
+        description="Tulisan ini akan dihapus permanen dan tidak bisa dikembalikan."
+        confirmLabel="Delete"
+        destructive
+        pending={isPending}
+        onConfirm={handleDelete}
+        onCancel={() => setConfirmOpen(false)}
+      />
     </>
   );
 }
