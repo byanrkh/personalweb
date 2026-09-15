@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const paths = [
+  { label: "Home", path: "/" },
   { label: "About", path: "/about" },
   { label: "Projects", path: "/projects" },
   { label: "Writings", path: "/writings" },
@@ -13,21 +14,18 @@ const paths = [
 export default function Navbar() {
   const pathname = usePathname();
   return (
-    <header className="w-full">
-      <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-6">
-        <Link href="/" className="text-xl font-medium">
-          byanrkh
-        </Link>
+    <header className="w-full border-b border-zinc-900">
+      <div className="mx-auto flex max-w-2xl justify-end px-6 py-6">
         <nav>
           <ul className="flex gap-5 text-sm">
-            {paths.map((item, index) => (
-              <li key={index}>
+            {paths.map((item) => (
+              <li key={item.path}>
                 <Link
                   className={cn(
-                    "transition-all duration-200",
+                    "transition-colors duration-200",
                     pathname === item.path
-                      ? "underline underline-offset-2 hover:underline-offset-4"
-                      : "text-zinc-400 hover:text-zinc-300",
+                      ? "text-zinc-100 underline underline-offset-4"
+                      : "text-zinc-400 hover:text-zinc-200",
                   )}
                   href={item.path}
                 >
