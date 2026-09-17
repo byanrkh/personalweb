@@ -1,26 +1,27 @@
+import { redirect } from "next/navigation";
 import Container from "@/components/Container";
 import PageHeading from "@/components/Heading";
 import { getAdminUser } from "@/libs/supabase/auth";
 import { createClient } from "@/libs/supabase/server";
 import { sortProjects } from "@/libs/Projects/SortProject";
 import type { Project } from "@/types/Project";
-import AdminProjectsNav from "./Content/AdminProjectsNav";
-import ProjectsBrowser from "./Content/ProjectsBrowser";
+import AdminProjectsNav from "../Content/AdminProjectsNav";
+import ProjectsBrowser from "../Content/ProjectsBrowser";
 
-export default async function ProjectsPage() {
+export default async function ProjectDraftsPage() {
   const admin = await getAdminUser();
-  const supabase = await createClient();
-
-  let query = supabase.from("projects").select("*");
   if (!admin) {
-    // Defense in depth: RLS already restricts this, but keep it explicit.
-    query = query.eq("published", true);
+    redirect("/projects");
   }
 
-  const { data, error } = await query;
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("projects")
+    .select("*")
+    .eq("published", false);
 
   if (error) {
-    console.error("Failed to load projects:", error.message);
+    console.error("Failed to load draft projects:", error.message);
   }
 
   const items = sortProjects((data ?? []) as Project[]);
@@ -32,12 +33,12 @@ export default async function ProjectsPage() {
         description="A few things I've built and shipped."
       />
 
-      {admin ? <AdminProjectsNav active="all" /> : null}
+      <AdminProjectsNav active="drafts" />
 
       <ProjectsBrowser
         projects={items}
-        admin={!!admin}
-        emptyMessage="Nothing published yet — first project is coming soon."
+        admin
+        emptyMessage="No draft projects right now."
       />
     </Container>
   );

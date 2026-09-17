@@ -13,6 +13,7 @@ const ALLOWED_TYPES = [
   "image/gif",
   "image/svg+xml",
 ];
+const ALLOWED_FOLDERS = new Set(["writings", "projects"]);
 
 export async function POST(request: Request) {
   const admin = await getAdminUser();
@@ -22,6 +23,8 @@ export async function POST(request: Request) {
 
   const formData = await request.formData();
   const file = formData.get("file");
+  const rawFolder = (formData.get("folder") as string) || "writings";
+  const folder = ALLOWED_FOLDERS.has(rawFolder) ? rawFolder : "writings";
 
   if (!(file instanceof File)) {
     return NextResponse.json({ error: "No file provided." }, { status: 400 });
@@ -44,7 +47,7 @@ export async function POST(request: Request) {
   try {
     const bytes = Buffer.from(await file.arrayBuffer());
     const extension = file.name.split(".").pop()?.toLowerCase() || "bin";
-    const key = `writings/${new Date().toISOString().slice(0, 10)}/${randomUUID()}.${extension}`;
+    const key = `${folder}/${new Date().toISOString().slice(0, 10)}/${randomUUID()}.${extension}`;
 
     const url = await uploadToR2({
       key,
