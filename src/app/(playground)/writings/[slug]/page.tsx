@@ -70,7 +70,7 @@ export default async function WritingDetailPage({
                   href={`/writings/tags/${slugify(tag)}`}
                   className="inline-block rounded-lg border border-zinc-800 px-3 py-1 text-xs text-zinc-400 transition-colors hover:border-zinc-600 hover:text-zinc-200"
                 >
-                  {tag}
+                  <span className="text-zinc-500">#</span> {tag}
                 </Link>
               </li>
             ))}

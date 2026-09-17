@@ -66,6 +66,7 @@ export default function TagsInput({
             key={tag}
             className="flex items-center gap-1 rounded-md border border-zinc-700 bg-zinc-900 px-2 py-1 text-xs text-zinc-300"
           >
+            <span className="text-zinc-500">#</span>
             {tag}
             <button
               type="button"

@@ -74,7 +74,7 @@ export default function WritingsList({
                     href={`/writings/tags/${slugify(tag)}`}
                     className="inline-block rounded-md border border-zinc-800 px-2 py-0.5 text-xs text-zinc-500 transition-colors hover:border-zinc-600 hover:text-zinc-200"
                   >
-                    {tag}
+                    <span className="text-zinc-500">#</span> {tag}
                   </Link>
                 </li>
               ))}
