@@ -1,8 +1,5 @@
 import { NextResponse } from "next/server";
-import { createElement } from "react";
-import { renderToStaticMarkup } from "react-dom/server";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import { parse } from "marked";
 import { createClient } from "@/libs/supabase/server";
 import { sortWritings } from "@/libs/Articles/SortWriting";
 import type { Writing } from "@/types/Writing";
@@ -28,12 +25,8 @@ function escapeXml(input: string): string {
     .replace(/'/g, "&apos;");
 }
 
-// Reuse the same markdown pipeline as the site's <Markdown /> component, so
-// what shows up in a feed reader matches what shows up on the page.
 function markdownToHtml(content: string): string {
-  return renderToStaticMarkup(
-    createElement(ReactMarkdown, { remarkPlugins: [remarkGfm] }, content),
-  );
+  return parse(content, { async: false }) as string;
 }
 
 function buildItem(post: Writing): string {
@@ -61,7 +54,7 @@ export async function GET() {
   const { data, error } = await supabase
     .from("writings")
     .select("*")
-    .eq("published", true); // defense in depth, same as /writings page
+    .eq("published", true);
 
   if (error) {
     console.error("Failed to load writings for RSS feed:", error.message);
