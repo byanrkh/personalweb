@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { slugify } from "@/libs/Slug";
+import { slugify } from "@/libs/Articles/Slug";
 import type { Writing } from "@/types/Writing";
-import MarkdownEditor from "@/components/MarkdownEditor";
+import MarkdownEditor from "@/components/Articles/MarkdownEditor";
+import TagsInput from "@/components/Articles/TagsInput";
 
 type Props = {
   action: (formData: FormData) => void;
@@ -91,19 +92,11 @@ export default function WritingForm({
         />
       </div>
 
-      <div className="space-y-1.5">
-        <label htmlFor="tags" className="text-sm text-zinc-500">
-          Tags <span className="text-zinc-600">(comma separated)</span>
-        </label>
-        <input
-          id="tags"
-          name="tags"
-          type="text"
-          defaultValue={defaultValues?.tags?.join(", ")}
-          placeholder="nextjs, supabase, notes"
-          className="w-full rounded-lg border border-zinc-800 bg-transparent px-3 py-2 text-sm text-zinc-100 outline-none focus-visible:border-zinc-600"
-        />
-      </div>
+      <TagsInput
+        id="tags"
+        name="tags"
+        defaultValue={defaultValues?.tags ?? []}
+      />
 
       <MarkdownEditor
         id="content"

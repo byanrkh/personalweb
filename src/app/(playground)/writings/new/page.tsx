@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import Container from "@/components/Container";
 import PageHeading from "@/components/Heading";
 import { getAdminUser } from "@/libs/supabase/auth";
-import WritingForm from "../WritingForm";
+import WritingForm from "../Content/WritingForm";
 import { createWriting } from "../actions";
 
 export default async function NewWritingPage({

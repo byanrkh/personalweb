@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import ConfirmDialog from "@/components/ConfirmDialog";
-import { deleteWriting, togglePublish } from "./actions";
+import { deleteWriting, togglePublish } from "../actions";
 
 export default function WritingRowActions({
   id,

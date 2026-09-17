@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/libs/supabase/server";
 import { getAdminUser } from "@/libs/supabase/auth";
-import { slugify } from "@/libs/Slug";
+import { slugify } from "@/libs/Articles/Slug";
 
 async function requireAdmin() {
   const admin = await getAdminUser();

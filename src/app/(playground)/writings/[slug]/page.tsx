@@ -2,12 +2,16 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Container from "@/components/Container";
 import PageHeading from "@/components/Heading";
-import Markdown from "@/components/Markdown";
+import Markdown from "@/components/Articles/Markdown";
 import { getAdminUser } from "@/libs/supabase/auth";
 import { createClient } from "@/libs/supabase/server";
-import { formatDate } from "@/libs/Format";
-import { formatReadingTime } from "@/libs/ReadingTime";
+import { formatDate } from "@/libs/Articles/Format";
+import { formatReadingTime } from "@/libs/Articles/ReadingTime";
+import { formatViews } from "@/libs/ViewCount";
+import { slugify } from "@/libs/Articles/Slug";
 import type { Writing } from "@/types/Writing";
+import ViewTracker from "@/components/ViewTracker";
+import { Eye } from "react-feather";
 
 export default async function WritingDetailPage({
   params,
@@ -51,16 +55,23 @@ export default async function WritingDetailPage({
           <span className="text-xs text-zinc-500">
             {formatReadingTime(post.content)}
           </span>
+          <span className="text-xs text-zinc-500">•</span>
+          <span className="text-xs text-zinc-500 flex gap-1 items-center">
+            <Eye size={10} />
+            {formatViews(post.views_count)}
+          </span>
         </div>
 
         {post.tags?.length ? (
           <ul className="flex flex-wrap gap-2">
             {post.tags.map((tag) => (
-              <li
-                key={tag}
-                className="rounded-lg border border-zinc-800 px-3 py-1 text-xs text-zinc-400"
-              >
-                {tag}
+              <li key={tag}>
+                <Link
+                  href={`/writings/tags/${slugify(tag)}`}
+                  className="inline-block rounded-lg border border-zinc-800 px-3 py-1 text-xs text-zinc-400 transition-colors hover:border-zinc-600 hover:text-zinc-200"
+                >
+                  {tag}
+                </Link>
               </li>
             ))}
           </ul>
@@ -75,6 +86,8 @@ export default async function WritingDetailPage({
           </Link>
         ) : null}
       </div>
+
+      {post.published ? <ViewTracker slug={post.slug} /> : null}
 
       <Markdown content={post.content} />
     </Container>

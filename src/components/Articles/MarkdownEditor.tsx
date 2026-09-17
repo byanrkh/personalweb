@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { Image as ImageIcon, Loader } from "react-feather";
 import { cn } from "@/libs/Cn";
-import Markdown from "@/components/Markdown";
+import Markdown from "@/components/Articles/Markdown";
 
 type Props = {
   id: string;

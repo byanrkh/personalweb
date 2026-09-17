@@ -2,10 +2,10 @@ import Container from "@/components/Container";
 import PageHeading from "@/components/Heading";
 import { getAdminUser } from "@/libs/supabase/auth";
 import { createClient } from "@/libs/supabase/server";
-import { sortWritings } from "@/libs/SortWriting";
+import { sortWritings } from "@/libs/Articles/SortWriting";
 import type { Writing } from "@/types/Writing";
-import AdminWritingsNav from "./AdminWritingsNav";
-import WritingsList from "./WritingsList";
+import AdminWritingsNav from "./Content/AdminWritingsNav";
+import WritingsBrowser from "./Content/WritingsBrowser";
 import React from "react";
 
 export default async function WritingsPage() {
@@ -35,13 +35,11 @@ export default async function WritingsPage() {
 
       {admin ? <AdminWritingsNav active="all" /> : null}
 
-      {items.length === 0 ? (
-        <p className="text-sm text-zinc-500">
-          Nothing published yet — first post is coming soon.
-        </p>
-      ) : (
-        <WritingsList writings={items} admin={!!admin} />
-      )}
+      <WritingsBrowser
+        writings={items}
+        admin={!!admin}
+        emptyMessage="Nothing published yet — first post is coming soon."
+      />
     </Container>
   );
 }

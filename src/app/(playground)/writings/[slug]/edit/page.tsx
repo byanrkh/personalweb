@@ -4,7 +4,7 @@ import PageHeading from "@/components/Heading";
 import { getAdminUser } from "@/libs/supabase/auth";
 import { createClient } from "@/libs/supabase/server";
 import type { Writing } from "@/types/Writing";
-import WritingForm from "../../WritingForm";
+import WritingForm from "../../Content/WritingForm";
 import { updateWriting } from "../../actions";
 
 export default async function EditWritingPage({
