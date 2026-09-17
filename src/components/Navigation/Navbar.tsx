@@ -6,7 +6,6 @@ import { newsreader } from "@/libs/Fonts";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Menu, X } from "react-feather";
 
 const paths = [
   { label: "About", path: "/about" },
@@ -18,12 +17,10 @@ export default function Navbar({ isAdmin }: { isAdmin: boolean }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  // Close menu on route change
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
 
-  // Lock body scroll + close on Escape while menu is open
   useEffect(() => {
     if (!open) return;
 
@@ -85,34 +82,32 @@ export default function Navbar({ isAdmin }: { isAdmin: boolean }) {
           </ul>
         </nav>
 
-        {/* Mobile trigger */}
+        {/* Mobile trigger — custom morphing hamburger */}
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
-          className="relative z-50 flex h-9 w-9 items-center justify-center text-zinc-300 transition-colors hover:text-zinc-50 md:hidden"
+          className="relative z-50 flex h-9 w-9 flex-col items-center justify-center gap-[5px] text-zinc-300 transition-colors hover:text-zinc-50 md:hidden"
         >
-          <span className="relative block h-5 w-5">
-            <Menu
-              size={20}
-              className={cn(
-                "absolute inset-0 transition-all duration-300 ease-out",
-                open
-                  ? "rotate-90 scale-0 opacity-0"
-                  : "rotate-0 scale-100 opacity-100",
-              )}
-            />
-            <X
-              size={20}
-              className={cn(
-                "absolute inset-0 transition-all duration-300 ease-out",
-                open
-                  ? "rotate-0 scale-100 opacity-100"
-                  : "-rotate-90 scale-0 opacity-0",
-              )}
-            />
-          </span>
+          <span
+            className={cn(
+              "h-px w-5 bg-current transition-transform duration-300 ease-[cubic-bezier(0.65,0,0.35,1)]",
+              open && "translate-y-[6px] rotate-45",
+            )}
+          />
+          <span
+            className={cn(
+              "h-px w-5 bg-current transition-opacity duration-200 ease-out",
+              open && "opacity-0",
+            )}
+          />
+          <span
+            className={cn(
+              "h-px w-5 bg-current transition-transform duration-300 ease-[cubic-bezier(0.65,0,0.35,1)]",
+              open && "-translate-y-[6px] -rotate-45",
+            )}
+          />
         </button>
       </div>
 
