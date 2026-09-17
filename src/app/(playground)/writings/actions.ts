@@ -89,6 +89,7 @@ export async function createWriting(formData: FormData) {
 
   revalidatePath("/writings");
   revalidatePath("/writings/drafts");
+  revalidatePath("/rss.xml");
   redirect(publish ? `/writings/${slug}` : `/writings/${slug}/edit`);
 }
 
@@ -177,6 +178,7 @@ export async function updateWriting(originalSlug: string, formData: FormData) {
   revalidatePath("/writings/drafts");
   revalidatePath(`/writings/${originalSlug}`);
   revalidatePath(`/writings/${slug}`);
+  revalidatePath("/rss.xml");
   redirect(intent === "publish" ? `/writings/${slug}` : `/writings/${slug}/edit`);
 }
 
@@ -188,6 +190,7 @@ export async function deleteWriting(id: string) {
 
   revalidatePath("/writings");
   revalidatePath("/writings/drafts");
+  revalidatePath("/rss.xml");
 }
 
 export async function togglePublish(id: string, publish: boolean) {
@@ -210,4 +213,5 @@ export async function togglePublish(id: string, publish: boolean) {
 
   revalidatePath("/writings");
   revalidatePath("/writings/drafts");
+  revalidatePath("/rss.xml");
 }

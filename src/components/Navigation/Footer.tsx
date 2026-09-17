@@ -5,6 +5,7 @@ const LINKS = [
   { label: "Email", href: "mailto:hello@byanrkh.com" },
   { label: "GitHub", href: "https://github.com/byanrkh" },
   { label: "LinkedIn", href: "https://linkedin.com/in/byanrkh" },
+  { label: "RSS", href: "/rss.xml" },
 ];
 
 export default function Footer() {

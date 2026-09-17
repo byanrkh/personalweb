@@ -6,6 +6,11 @@ export const metadata: Metadata = {
   title: "Abyan Raditya",
   description:
     "Personal site of Abyan Raditya — builder, developer, and product tinkerer.",
+  alternates: {
+    types: {
+      "application/rss+xml": "/rss.xml",
+    },
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
