@@ -12,7 +12,7 @@ export default async function LoginPage({
   return (
     <div className="flex min-h-screen items-center justify-center">
       <Container className="w-full max-w-sm space-y-8">
-        <PageHeading title="Login" description="Admin access only." />
+        <PageHeading title="Login" />
 
         <form action={login} className="space-y-4">
           <input
