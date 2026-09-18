@@ -1,5 +1,6 @@
 import Footer from "@/components/Navigation/Footer";
 import Navbar from "@/components/Navigation/Navbar";
+import PageTransition from "@/components/PageTransition";
 import { getAdminUser } from "@/libs/supabase/auth";
 import React from "react";
 
@@ -13,7 +14,9 @@ export default async function layout({
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar isAdmin={!!admin} />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1">
+        <PageTransition>{children}</PageTransition>
+      </main>
       <Footer />
     </div>
   );
