@@ -1,8 +1,8 @@
+import { cache } from "react";
 import { createClient } from "@/libs/supabase/server";
 
-export async function getAdminUser() {
+export const getAdminUser = cache(async () => {
   const supabase = await createClient();
-
   const { data, error } = await supabase.auth.getClaims();
   if (error || !data?.claims) return null;
 
@@ -14,6 +14,5 @@ export async function getAdminUser() {
     .single();
 
   if (profile?.role !== "admin") return null;
-
   return { id: userId, email: data.claims.email as string };
-}
+});
